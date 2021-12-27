@@ -63,7 +63,7 @@ console.log(burger);//secretComponentAmount ketchup не доступны
 
 //3.3
 
-//STATIC & SINGLETON PATTERN
+//STATIC & SINGLETON PATTERN////////////////////////////////////////////////////
 
 //В ES6 было введено модификатор свойства STATIC
 //Это означает общще доступное свойство в классе для всех экземпляров
@@ -134,7 +134,7 @@ console.log(a1.counter);//3
 
 //3.4
 
-//SUPER И МЕТОД SUPER()
+//SUPER И МЕТОД SUPER()////////////////////////////////////////////////////
 
 //Метод super нужен чтобы конролировать конструкторы суперклассов и и х подклассов
 //Если конструктор суперксласса нуждается в аргументах то в 
@@ -186,3 +186,61 @@ const truck1 = new Truk('V8', true, 'Volvo', true);
 console.log(truck1);
 
 console.log(truck1.getCompany());
+
+//3.5
+
+//АБСТРАКТНЫЕ КЛАССЫ////////////////////////////////////////////////////
+
+//Если добавить ключевое слово abstract в обявление класса
+//то мы создадим такой класс котрый не может быт проинстанциирован
+
+//Ето можно исполтзоать чтобы делигировать реализацию методов подклассам
+//но убедится что они будут иметь одинаковые сигнатуры
+abstract class Guy {
+    constructor (
+        public name: string,
+    ){}
+
+    changeAddress (newAddr: string){
+        console.log('Seted new adres' + newAddr);
+    }
+
+    giveDayOff (){
+        console.log('Give dayoof 4 this guy ' + this.name);
+    }
+
+    promoute (percent: number){
+        this.giveDayOff();
+    }
+
+    //абстрактный метод который гарантирует сигнатуру метода
+    abstract incracePay (percent: number): void
+};
+
+//это обязывает использовать метод согласно сигнатуре в потомках
+//иначе не проезойдет компиляции
+class EmploeeGuy extends Guy {
+    //так как в потомках мы не вызываем конструкторы то они наследуют констуктор от
+    //супер класса
+    //если бил бы нужен конструктор то пришлось бы воспользоватся методом super
+    incracePay(percent: number): void {
+        console.log('Increased EMOLOEE pay to the ' + this.name + ' for ' + percent + '%');
+    }
+};
+
+class ContractorGuy extends Guy {
+    incracePay(percent: number): void {
+        console.log('Increased CONTRACTOR pay to the ' + this.name + ' for ' + percent + '%');
+    }
+};
+
+const worckers: Guy[] = [];
+
+//Более конкретный тип может быть присвоен более обобщенному
+//по этому можно писать так
+worckers[0] = new EmploeeGuy('Garry');
+worckers[1] = new ContractorGuy('Tsigan');
+
+worckers.forEach(w => {
+    w.incracePay(20);
+});

@@ -130,3 +130,47 @@ var Truk = (function (_super) {
 var truck1 = new Truk('V8', true, 'Volvo', true);
 console.log(truck1);
 console.log(truck1.getCompany());
+var Guy = (function () {
+    function Guy(name) {
+        this.name = name;
+    }
+    Guy.prototype.changeAddress = function (newAddr) {
+        console.log('Seted new adres' + newAddr);
+    };
+    Guy.prototype.giveDayOff = function () {
+        console.log('Give dayoof 4 this guy ' + this.name);
+    };
+    Guy.prototype.promoute = function (percent) {
+        this.giveDayOff();
+    };
+    return Guy;
+}());
+;
+var EmploeeGuy = (function (_super) {
+    __extends(EmploeeGuy, _super);
+    function EmploeeGuy() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    EmploeeGuy.prototype.incracePay = function (percent) {
+        console.log('Increased EMOLOEE pay to the ' + this.name + ' for ' + percent + '%');
+    };
+    return EmploeeGuy;
+}(Guy));
+;
+var ContractorGuy = (function (_super) {
+    __extends(ContractorGuy, _super);
+    function ContractorGuy() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ContractorGuy.prototype.incracePay = function (percent) {
+        console.log('Increased CONTRACTOR pay to the ' + this.name + ' for ' + percent + '%');
+    };
+    return ContractorGuy;
+}(Guy));
+;
+var worckers = [];
+worckers[0] = new EmploeeGuy('Garry');
+worckers[1] = new ContractorGuy('Tsigan');
+worckers.forEach(function (w) {
+    w.incracePay(20);
+});
