@@ -142,6 +142,7 @@ var Guy = (function () {
     };
     Guy.prototype.promoute = function (percent) {
         this.giveDayOff();
+        this.incracePay(percent);
     };
     return Guy;
 }());
@@ -172,5 +173,177 @@ var worckers = [];
 worckers[0] = new EmploeeGuy('Garry');
 worckers[1] = new ContractorGuy('Tsigan');
 worckers.forEach(function (w) {
-    w.incracePay(20);
+    w.promoute(20);
 });
+;
+var ProductService = (function () {
+    function ProductService() {
+    }
+    ProductService.prototype.getProducts = function (prod) {
+        if (typeof prod === 'number') {
+            console.log('Called with id ' + prod);
+            return;
+        }
+        ;
+        if (typeof prod === 'string') {
+            console.log('Called ARRAy of products with same descr ' + prod);
+            return;
+        }
+        ;
+        console.log('Called all products');
+    };
+    return ProductService;
+}());
+;
+var productS = new ProductService();
+productS.getProducts();
+productS.getProducts(6);
+productS.getProducts('bread');
+var Pilot = (function () {
+    function Pilot(name, motoHours) {
+    }
+    return Pilot;
+}());
+;
+;
+var Slave = (function () {
+    function Slave(properties) {
+        this.name = 'John';
+        this.salary = 4;
+    }
+    ;
+    return Slave;
+}());
+;
+;
+var Vehecle = (function () {
+    function Vehecle() {
+    }
+    Vehecle.prototype.startEngine = function () {
+        return true;
+    };
+    Vehecle.prototype.stopEngine = function () {
+        return false;
+    };
+    Vehecle.prototype.brake = function () {
+        return true;
+    };
+    Vehecle.prototype.accelerate = function (howTo) {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    };
+    Vehecle.prototype.honk = function (howLong) {
+        console.log('Deep ' + howLong + 's honk!');
+    };
+    Vehecle.prototype.radioOn = function () {
+        return true;
+    };
+    return Vehecle;
+}());
+;
+var f1 = new Vehecle();
+;
+;
+var SecretCar = (function (_super) {
+    __extends(SecretCar, _super);
+    function SecretCar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SecretCar.prototype.startEngine = function () {
+        return true;
+    };
+    SecretCar.prototype.stopEngine = function () {
+        return false;
+    };
+    SecretCar.prototype.brake = function () {
+        return true;
+    };
+    SecretCar.prototype.accelerate = function (howTo) {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    };
+    SecretCar.prototype.honk = function (howLong) {
+        console.log('Deep ' + howLong + 's honk!');
+    };
+    SecretCar.prototype.dive = function (meters) {
+        console.log('Bye, Im dive into ' + meters + 'm');
+    };
+    SecretCar.prototype.land = function () {
+        console.log('Go to land');
+    };
+    SecretCar.prototype.fly = function () {
+        console.log('Iaaaam flyyy!');
+    };
+    return SecretCar;
+}(Vehecle));
+;
+var SC = new SecretCar();
+SC.accelerate(120);
+SC.fly();
+;
+var TurboCar = (function () {
+    function TurboCar() {
+    }
+    TurboCar.prototype.startEngine = function () {
+        return true;
+    };
+    TurboCar.prototype.stopEngine = function () {
+        return false;
+    };
+    TurboCar.prototype.brake = function () {
+        return true;
+    };
+    TurboCar.prototype.accelerate = function (howTo) {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    };
+    TurboCar.prototype.honk = function (howLong) {
+        console.log('Deep ' + howLong + 's honk!');
+    };
+    TurboCar.prototype.turbo = function () {
+        console.log('It so Fast acceleration!!!');
+    };
+    return TurboCar;
+}());
+;
+var TC = new TurboCar();
+TC.accelerate(100);
+TC.turbo();
+var Good = (function () {
+    function Good(id, description) {
+    }
+    return Good;
+}());
+;
+var GoodsService = (function () {
+    function GoodsService() {
+    }
+    GoodsService.prototype.getMeProds = function () {
+        return [];
+    };
+    GoodsService.prototype.getSingleProdToId = function (id) {
+        return { id: id, description: 'Im not a real good from GoodService' };
+    };
+    return GoodsService;
+}());
+;
+;
+var MockGoodsServak = (function () {
+    function MockGoodsServak() {
+    }
+    MockGoodsServak.prototype.getMeProds = function () {
+        return [];
+    };
+    MockGoodsServak.prototype.getSingleProdToId = function (id) {
+        return { id: id, description: 'Im not a real good from GoodServak' };
+    };
+    return MockGoodsServak;
+}());
+;
+function getProductService(isProduction) {
+    if (isProduction)
+        return new GoodsService();
+    return new MockGoodsServak();
+}
+;
+var myProdService = getProductService(true);
+var myDevService = getProductService(false);
+console.log(myProdService.getSingleProdToId(12));
+console.log(myDevService.getSingleProdToId(2));

@@ -205,12 +205,14 @@ abstract class Guy {
         console.log('Seted new adres' + newAddr);
     }
 
-    giveDayOff (){
+    private giveDayOff (){
         console.log('Give dayoof 4 this guy ' + this.name);
     }
 
     promoute (percent: number){
         this.giveDayOff();
+
+        this.incracePay(percent);
     }
 
     //абстрактный метод который гарантирует сигнатуру метода
@@ -242,5 +244,309 @@ worckers[0] = new EmploeeGuy('Garry');
 worckers[1] = new ContractorGuy('Tsigan');
 
 worckers.forEach(w => {
-    w.incracePay(20);
+    w.promoute(20);
 });
+
+//все это пример полиморфизма - столба  ООП
+//Факический тип объекта выявляется непостедствено во время исполнения
+//по этому мы вызыаем правильные методы на кождом объекте
+
+//3.6
+
+//ПЕРГРУЗКА МЕТОДА////////////////////////////////////////////////////
+
+//Строготипизированые языки по умолчанию поддерживают ПЕРЕГРУЗКУ МЕТОДОВ
+//это означает что в классе может быть дваи болше метода с одинаковым названием
+//и разными аргументами или их количеством
+
+//JS не подерживает такого
+//но благодаря TS мыимеем такую возможность
+
+//В классе мы должны реализовать все сигнатуры методов без реализации
+//одну общюю релизацию
+interface Prod {
+    id: number,
+    descr: string,
+};
+
+class ProductService {
+    getProducts (): void
+    getProducts (id: number): Prod
+    getProducts (descr: string): Prod[]
+    getProducts (prod?: string | number): Prod | Prod[] | void{
+        if (typeof prod === 'number'){
+            console.log('Called with id ' + prod);
+
+            return;
+        };
+
+        if (typeof prod === 'string'){
+            console.log('Called ARRAy of products with same descr ' + prod);
+            
+            return;
+        };
+
+        console.log('Called all products');
+    }
+};
+
+const productS = new ProductService();
+
+productS.getProducts();
+productS.getProducts(6);
+productS.getProducts('bread');
+//все это нужно для того чтобы компилятор мог верно определить перегружамый метод
+//но это го кажется мало чтобы так заморачиватся и проще обявить два разных метода
+
+//да ... всегда кроме когда нужна перегузка конструктора
+
+//мы мжем обьявить один класс с разными сигнатурами конструктора
+class Pilot {
+    constructor ()
+    constructor (name: string)
+    constructor (name: string, motoHours: number)
+
+    constructor (name?: string, motoHours?: number){}
+};
+
+//но опять же это не единственный способ прегрузить конструктор или метод
+//можно создать интерфейс с возможными типами
+//и передать как тип аргумента
+
+interface RersonProps {
+    name?: string,
+    salary?: number, 
+};
+
+class Slave {
+    name = 'John';
+    salary = 4;
+
+    constructor (properties: RersonProps){
+        //реализация возможных сценариев
+    };
+};
+
+//3.7
+
+//РАБОТА С ИНТЕРФЕЙСАМИ////////////////////////////////////////////////////
+
+//Тут о том как реализовать реализация классом конкретного API
+
+//Интерфейс может содержат не только поля но и сигнатуры методов(но не их реализации)
+//потом используя слово inplements после обявления класса мы можем указать интерфейс который он должен выполнить
+interface MotorVehicle {
+    startEngine(): boolean;
+    stopEngine(): boolean;
+    brake(): boolean;
+    accelerate(howTo: number): void;
+    honk(howLong: number): void;
+};
+
+//тут мы говорим что клас Vehicle имплементирует интерфкйс MotorVehicle
+//что буквально значит мы обязываем класс реализовать данный интерфейс
+//иначе код не скомпилится
+class Vehecle implements MotorVehicle {
+    startEngine(): boolean {
+        return true;
+    }
+
+    stopEngine(): boolean {
+        return false;
+    }
+
+    brake(): boolean {
+        return true;
+    }
+
+    accelerate(howTo: number): void {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    }
+
+    honk(howLong: number): void {
+        console.log('Deep ' + howLong + 's honk!');
+    }
+
+    radioOn(): boolean {
+        return true;
+    }
+};
+
+//теперь мы даже можем сделать так
+//ошибок не будет
+//разница лиш в том что если у Vehicle будут еще свои методы то их нельзя будет реализовать
+
+const f1: MotorVehicle = new Vehecle();
+
+//radioOn тут в подсказках не будет
+//f1.
+
+//класс может реализовывать более одного интерфейса
+interface Swimmable {
+    dive(meters: number): void;
+    land(): void;
+};
+
+interface Flyable {
+    fly(): void;
+};
+
+//теперь можно расширить класс Vehicle оставив не тронутым его функционал
+class SecretCar extends Vehecle implements Swimmable, Flyable {
+    startEngine(): boolean {
+        return true;
+    }
+
+    stopEngine(): boolean {
+        return false;
+    }
+
+    brake(): boolean {
+        return true;
+    }
+
+    accelerate(howTo: number): void {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    }
+
+    honk(howLong: number): void {
+        console.log('Deep ' + howLong + 's honk!');
+    }
+
+    dive(meters: number): void {
+        console.log('Bye, Im dive into ' + meters + 'm');
+    }
+
+    land(): void {
+        console.log('Go to land');
+    }
+
+    fly(): void {
+        console.log('Iaaaam flyyy!');
+    }
+};
+
+const SC = new SecretCar();
+
+//теперь можно делать супертачки и одновременно иметь возможность делать обычные
+SC.accelerate(120);
+SC.fly();
+
+//3.8
+
+//ОБЬЕДЕНЕНИЯ ИНТЕРФЕЙСОВ////////////////////////////////////////////////////
+//Видно как гибко можно писять код на ООП с помощю этого всего
+
+//но еще можно обединять интерфейсы
+interface Turbo extends MotorVehicle{
+    turbo(): void;
+};
+
+//теперь класс TurboCar должен реализовать все методы MotorVehicle и Turbo
+//представляя новый вид бистрых тачек
+//програмить через интерфейсы круто и очень читабельно
+class TurboCar implements Turbo {
+    startEngine(): boolean {
+        return true;
+    }
+
+    stopEngine(): boolean {
+        return false;
+    }
+
+    brake(): boolean {
+        return true;
+    }
+
+    accelerate(howTo: number): void {
+        console.log('Accelerated for ' + howTo + 'm/h');
+    }
+
+    honk(howLong: number): void {
+        console.log('Deep ' + howLong + 's honk!');
+    }
+
+    turbo(): void {
+        console.log('It so Fast acceleration!!!');
+    }
+};
+
+const TC = new TurboCar();
+
+TC.accelerate(100);
+TC.turbo();
+
+//3.9
+
+//ПРОГРАМИРОВАНИЕ ЧЕРЕЗ ИНТЕРФЕЙСЫ////////////////////////////////////////////////////
+
+//допустим нужно написать сервис для отбора продуктов с большой базы даных
+class Good {
+    constructor(id: number, description: string){}
+};
+
+class GoodsService {
+    getMeProds(): Good[] {
+        //реализация здесь
+        return [];
+    }
+
+    getSingleProdToId(id: number): Good {
+        return {id, description: 'Im not a real good from GoodService'};
+    }
+};
+
+//для тестирования или для работы с жостко закодированими данними
+//нужно создать мок объект чтобы не лезть в подленный но с точно такой реализацией
+
+//можно сделать так...
+//и наделать кучу ошибок
+// class MockGoodsService {
+//     getProducts(): Good[] {
+//         //реализация здесь
+//         return [];
+//     }
+
+//     getGoodForId(): Good {
+//         //реализация здесь
+//         return {id: -0, description: 'Its not a real product'};
+//     };
+// };
+
+//но TS достаточно умный чтобы понять
+//нижеидущие строчки
+// class MockGoodsService implements GoodsService {};
+//это застаавит реализовать интерфейс класса GoodsService
+
+//однако наилутшей практикой будет писать сразу через интерфейсы
+//не заботясь поеа од их реализации
+interface IGoodsServak {
+    getMeProds(): Good[];
+    getSingleProdToId(id: number): Good;
+};
+
+//и имплементить классы через них
+class MockGoodsServak implements IGoodsServak {
+    getMeProds(): Good[] {
+        return [];
+    }
+
+    getSingleProdToId(id: number): Good {
+        return {id, description: 'Im not a real good from GoodServak'};
+    }
+};
+
+//написать фабричную функцию можно исполбзуя интерейс в качестве значения ее возврата
+function getProductService (isProduction: boolean): IGoodsServak{
+    if (isProduction) return new GoodsService();
+    
+    return new MockGoodsServak();
+};
+
+//теперь  зависимости режима разрабоки или продакшен можно выбрать класс возвращаемого результата
+const myProdService = getProductService(true);
+
+const myDevService = getProductService(false);
+
+console.log(myProdService.getSingleProdToId(12));
+console.log(myDevService.getSingleProdToId(2));
