@@ -36,7 +36,7 @@ var Emploee = (function (_super) {
 }(Person3));
 ;
 var emp = new Emploee();
-console.log(emp.departament);
+console.log(emp.age);
 var Burger = (function () {
     function Burger(breadType, meatType, ketchup, secretComponentAmount) {
         this.breadType = breadType;
