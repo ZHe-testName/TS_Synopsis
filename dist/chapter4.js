@@ -90,3 +90,66 @@ var r1 = new Rectangle(3, 5);
 var r2 = new Rectangle(10, 6);
 var p1 = new Programmer('J', 2000);
 console.log(r1.compareTo(r2));
+function printMe(value) {
+    console.log(value);
+    return value;
+    ;
+}
+;
+var s = printMe('Hello');
+var Something = (function () {
+    function Something(someone) {
+        this.someone = someone;
+    }
+    return Something;
+}());
+;
+var some = printMe(new Something('grrr'));
+var Pair = (function () {
+    function Pair(key, value) {
+        this.key = key;
+        this.value = value;
+    }
+    return Pair;
+}());
+;
+function compare(pair1, pair2) {
+    return pair1.key === pair2.key &&
+        pair1.value === pair2.value;
+}
+;
+var pair1 = new Pair('Loe', 31);
+var pair2 = new Pair('Loe', 31);
+console.log(compare(pair1, pair2));
+var pair3 = new Pair('Apple', 'one');
+var pair4 = new Pair('apple', 'two');
+console.log(compare(pair3, pair4));
+;
+var UserRoles;
+(function (UserRoles) {
+    UserRoles["admin"] = "Administrator";
+    UserRoles["manager"] = "Manager";
+})(UserRoles || (UserRoles = {}));
+;
+function loadUser() {
+    return JSON.parse('{"name": "Katya", "role": "Administrator"}');
+}
+;
+var user = loadUser();
+switch (user.role) {
+    case UserRoles.admin:
+        console.log('Show admin panel');
+        break;
+    case UserRoles.manager:
+        console.log('Hide admin panel');
+        break;
+    default:
+        console.log('Wrong args');
+}
+;
+var outerFunc = function (someValue) { return function (mulplaer) { return someValue * mulplaer; }; };
+var innerFunc = outerFunc(10);
+console.log(innerFunc(6));
+var stringFunc = function (someStr) { return function (rec) { return someStr.length + rec; }; };
+var voidFunc = function () { return function (rec) { return 5 + rec; }; };
+var numberFunc = function (someNum) { return function (rec) { return someNum * rec; }; };

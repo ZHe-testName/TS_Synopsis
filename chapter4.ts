@@ -251,4 +251,129 @@ console.log(r1.compareTo(r2));
 
 //СОЗДАНИЕ ОБОБЩЕНЫХ ФУКЦИЙ////////////////////////////////////////////////////
 
-//
+//Мы знаем как писать функции которые принимают и возвращают заданые аргументы
+//Расмотрим не удачное решение для функции которая должна регестрировать переданое значение
+
+// function printMe (value: any): any {
+//     console.log(value)
+    
+//     return value;;
+// };
+
+// const s = printMe('Hello');
+
+// class Something {
+//     constructor(public someone: string){}
+// };
+
+// const some = printMe(new Something('grrr'));
+//в данной ситуации анализатор TS не помнит типы
+//если мы хотим знать какие типы аргументов были переданы в функцию
+//ее ножно переписать используя обобщенные типы
+function printMe <T> (value: T): T {
+    console.log(value)
+    
+    return value;;
+};
+
+let s = printMe('Hello');
+
+class Something {
+    constructor(public someone: string){}
+};
+
+const some = printMe(new Something('grrr'));
+//теперь типы анализатору известны
+//и если дальше сценарий будет обращатся к переменным то анализатор произведет проверку типов
+
+//для юольшей наглядности напишем класс который может принимать несколько обобщенных параметров
+//для представления пар ключ-значение
+
+class Pair <K, V> {
+    constructor(public key: K, public value: V){}
+};
+
+//теперь напишем обобщенную функцию которая сравеивает обобщенные пары
+function compare <K, V>(pair1: Pair<K, V>, pair2: Pair<K, V>){
+    return pair1.key === pair2.key &&
+        pair1.value === pair2.value;
+};
+
+const pair1: Pair<string, number> = new Pair('Loe', 31);
+const pair2 = new Pair('Loe', 31);//автоматом выводит тип
+
+console.log(compare<string, number>(pair1, pair2));
+//явно указав тип код блее нагляден
+//и компилятор выдаст ошибку если указать типы не верно
+//console.log(compare<string, string>(pair1, pair2));
+
+const pair3 = new Pair('Apple', 'one');
+const pair4 = new Pair('apple', 'two');
+
+console.log(compare(pair3, pair4));
+
+//еще один пример обобщенной функции
+//напишем авторизацию в зависимости от полученых данных
+//и будем скрывать или показывать панель
+interface User {
+    name: string,
+    role: UserRoles,
+};
+
+//ограничим роли
+enum UserRoles {
+    admin = 'Administrator',
+    manager = 'Manager',
+};
+
+//имитация загрузки с сервера
+function loadUser <T>(): T{
+    return JSON.parse('{"name": "Katya", "role": "Administrator"}');
+};
+
+const user = loadUser<User>();
+
+switch (user.role){
+    case UserRoles.admin:
+        console.log('Show admin panel');
+        
+        break;
+
+    case UserRoles.manager:
+        console.log('Hide admin panel');
+
+        break;
+
+    default:
+        console.log('Wrong args');
+};
+
+//4.8
+
+//ОБОБЩЕНИЕ ВОЗВРАЩАЕМОГО ЗНАЧЕНИЯ ФУНКЦИИ ВЫСШЕГО ПОРЯДКА////////////////////////////////////////////////////
+
+//фУНКЦИЯ ВЫСШЕГО ПОРДКА - это функция которая принимиает и/или возвращает еще одну функцию
+
+//Допустим нужна ФВП возвращающая ф со следующей сигнатурой
+// (c: number): number;
+
+const outerFunc = (someValue: number) => (mulplaer: number) => someValue * mulplaer;
+
+const innerFunc = outerFunc(10);//Замыкание someValue
+
+console.log(innerFunc(6));
+
+//допустим нам нужна такая же функция но принимающая разные аргументы
+//но возвращающая функцию с той же сигнатурой
+
+type numFunc<T> = (arg: T) => (mult: number) => number;
+//теперь можно обявлять переменные типа numFunc
+//и TS проверит чтбы переменные были функциями
+
+const stringFunc: numFunc<string> = (someStr: string) => (rec: number) => someStr.length + rec;
+
+const voidFunc: numFunc<void> = () => (rec: number) => 5 + rec;
+
+const numberFunc: numFunc<number> = (someNum: number) => (rec: number) => someNum * rec;
+
+// const strFunc: numFunc<string> = (someStr: string) => (rec: number) => someStr + rec;// не скомпилится
