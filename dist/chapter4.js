@@ -39,3 +39,54 @@ var convertTemperature = function (temp, fromTo) {
             temp * 9.0 / 5.0 + 32;
 };
 console.log(convertTemperature(53, Direction.CtoF));
+var GoTo;
+(function (GoTo) {
+    GoTo["Up"] = "Up";
+    GoTo["Down"] = "Down";
+    GoTo["Left"] = "Left";
+    GoTo["Right"] = "Right";
+})(GoTo || (GoTo = {}));
+;
+function move(dir) { }
+;
+var ProductActionTypes;
+(function (ProductActionTypes) {
+    ProductActionTypes["Load"] = "Products load all";
+    ProductActionTypes["Search"] = "Products search";
+    ProductActionTypes["LoadFaailre"] = "Products load all with failre";
+    ProductActionTypes["LoadSuccess"] = "Products load all with succes";
+})(ProductActionTypes || (ProductActionTypes = {}));
+;
+console.log(function () { return ProductActionTypes.Load; });
+console.log(function () { return ProductActionTypes.LoadFaailre; });
+;
+var a = ['Joe', 'Mary'];
+var b = ['Joe', 'Mary'];
+var c = ['Joe', false];
+;
+var Rectangle = (function () {
+    function Rectangle(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+    Rectangle.prototype.compareTo = function (value) {
+        return this.height * this.width - value.height * value.width;
+    };
+    return Rectangle;
+}());
+;
+var Programmer = (function () {
+    function Programmer(name, salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+    Programmer.prototype.compareTo = function (value) {
+        return this.salary - value.salary;
+    };
+    return Programmer;
+}());
+;
+var r1 = new Rectangle(3, 5);
+var r2 = new Rectangle(10, 6);
+var p1 = new Programmer('J', 2000);
+console.log(r1.compareTo(r2));
