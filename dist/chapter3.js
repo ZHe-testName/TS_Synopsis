@@ -347,3 +347,4 @@ var myProdService = getProductService(true);
 var myDevService = getProductService(false);
 console.log(myProdService.getSingleProdToId(12));
 console.log(myDevService.getSingleProdToId(2));
+//# sourceMappingURL=chapter3.js.map

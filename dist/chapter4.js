@@ -153,3 +153,4 @@ console.log(innerFunc(6));
 var stringFunc = function (someStr) { return function (rec) { return someStr.length + rec; }; };
 var voidFunc = function () { return function (rec) { return 5 + rec; }; };
 var numberFunc = function (someNum) { return function (rec) { return someNum * rec; }; };
+//# sourceMappingURL=chapter4.js.map

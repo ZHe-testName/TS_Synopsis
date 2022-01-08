@@ -57,3 +57,4 @@ personAdr1 = JSON.parse('{"adress": "25 Broadway"}');
 console.log(personAdr1.address);
 var personAdr2;
 personAdr2 = JSON.parse('{"adress": "25 Broadway"}');
+//# sourceMappingURL=chapter2.js.map

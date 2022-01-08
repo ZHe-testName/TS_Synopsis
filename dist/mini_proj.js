@@ -33,3 +33,4 @@ var fish = new Fish('Eyes');
 var monster = { name: 'Glummy' };
 console.log(talkToPet(dog));
 console.log(talkToPet(fish));
+//# sourceMappingURL=mini_proj.js.map
